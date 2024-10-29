@@ -5,27 +5,133 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script svc=""></script>
+
+    <style>
+
+        body{
+            background-color: bisque;
+        }
+        header {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .contingut{
+            display: flex;
+        }
+
+        .list{
+            background-color: aliceblue;
+            width: 35%;
+            text-align: center;
+            margin-left: 25px;
+            border-style: solid;
+            border-color: #000000;
+        }
+    
+        header h3 {
+            margin: 0;
+        }
+    
+        canvas{
+            margin-left: 30px;
+            background-color: aliceblue;
+        }
+    
+        .parameters{
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            text-align: center;
+        }
+    </style>
+
+<!--Formato para los datos-->
+    <script id="json" type="application/json">
+
+    [
+        {"type": "circle", "x": 20, "y":20, "r": 100, "color":#444},
+        {"type": "square", "x": 10, "y":50, "width": 100 "height": 100 "color":#222}
+    ]
+
+    </script>
+
 </head>
 <body>
-    
-<header>
-        <h1>FUNCIONÓ!</h1>
-        <p>no se el que pero funcionó.</p>
-        <div>
-                    <h3>fsdfegwegw</h3>
-        <h2>gegwegewgwe</h2>
+   
+    <header>
+        <h3>
+            <a href="/login">LOGIN</a>
+        </h3>
+        <h3>
+            <a href="/paint">PAINT</a>
+        </h3>
+        <h3>
+            <a href="/pergalery">MY GALERY</a>
+        </h3>
+        <h3>
+            <a href="/pubgalery">PUBLIC GALERY</a>
+        </h3>
+    </header>
+
+    <div class="contingut">
+
+        <canvas id="myCanvas" width="600" height="400" style="border:1px solid #000000;"></canvas>
+
+        <div class="list">
+
+            <h2>Figures</h2>
+
+            <button type="button" class="btn btn-primary">SAVE</button>
+
         </div>
-</header>
 
+    </div>
 
+    
 
-    <footer>
-        
-    </footer>
+<div class="parameters">
+    <div>
+        <h4>TYPE</h4>
+        <select id="shapeType">
+            <option value="hand">HANDS UP</option>
+            <option value="square">SQUARE</option>
+            <option value="circle">CIRCLE</option>
+            <option value="triangle">TRIANGLE</option>
+            <option value="star">STAR</option>
+        </select>
+    </div>
+    <div>
+        <h4>COLOR</h4>
+        <select id="colorInput">
+            <option value="#000">BLACK</option>
+            <option value="#ff0000">RED</option>
+            <option value="#009bff">BLUE</option>
+            <option value="#00ff32">GREEN</option>
+            <option value="#ffd500">YELLOW</option>
+            <option value="#c900ff">PURPLE</option>
+            <option value="#996401">BROWN</option>
+        </select>
+    </div>
+    <div>
+        <h4>SIZE</h4>
+        <select id="sizeInput">
+            <option value="35">SMALL</option>
+            <option value="60">MEDIUM</option>
+            <option value="95">BIG</option>
+        </select>
+    </div>
+    <div>
+        <h4>FILL</h4>
+        <input type="checkbox" id="fillShape">
+    </div>
 
+</div>
 
-
-
-    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae atque officiis enim dolorem. Ut quasi quibusdam fuga in excepturi id! Dolore consequuntur dolores consectetur. Quas id doloremque totam aliquam obcaecati!</p>
+    <script type="module" src="./main.js"></script>
 </body>
+
 </html>

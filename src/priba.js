@@ -34,3 +34,10 @@ const per = {
     }
 }
 
+const json = '{ "a": 1 }';
+JSON.parse(json);
+const j = JSON.parse(json);
+typeof j;
+j.a=2;
+JSON.stringify(j);
+

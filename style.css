@@ -1,0 +1,13 @@
+body{
+    background-color: rgb(231, 179, 100);
+    margin: 0;
+    place-items: center;
+}
+canvas{
+    background-color: azure;
+}
+
+.table{
+    background-color: aliceblue;
+    padding: 15px;
+}
