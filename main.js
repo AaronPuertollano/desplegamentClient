@@ -2,20 +2,9 @@
 //JSON.stringify para lo contrario
 //para borrar una figura habra que hacer un redibujo con todas la figuras menos la que hemos borrado
 
-/*
-
-const script = document.querySelector('#json');
-//path, event lisenter coordenadas ma alcçada
-const jsonscript = script.textContent;
-document.querySelector("code").textContent = jsonscript
-const p = document.createElement("p");
-p.textContent = jsonscript; */
-
-//const canvas = document.querySelector('canvas');
-
 const canvas = document.getElementById("myCanvas");
 const ctx = canvas.getContext("2d");
-
+let isDrawing = false;
 
 const drawRect = (x, y, w, h, color) => {
     ctx.beginPath();
@@ -41,11 +30,31 @@ const drawTriangle = (x, y, size, color) => {
     ctx.fill();
 };
 
+
+const startDrawing = (x, y, color, size) => {
+    isDrawing = true;
+    ctx.beginPath();
+    ctx.lineWidth = size / 5; 
+    ctx.strokeStyle = color;
+    ctx.moveTo(x, y);
+};
+
+const drawLine = (x, y) => {
+    if (!isDrawing) return;
+    ctx.lineTo(x, y);
+    ctx.stroke();
+};
+
+const stopDrawing = () => {
+    isDrawing = false;
+    ctx.closePath();
+};
+
 const drawStar = (x, y, size, color) => {
     const points = 7;
     const outerRadius = size;
     const innerRadius = size / 2.5;
-    const angle = Math.PI / points; // Ángulo entre las puntas de la estrella
+    const angle = Math.PI / points; 
 
     ctx.beginPath();
     ctx.fillStyle = color;
@@ -65,11 +74,9 @@ const drawStar = (x, y, size, color) => {
     ctx.fill();
 };
 
-canvas.addEventListener("click", (event) => {
-
+canvas.addEventListener("mousedown", (event) => {
     const x = event.clientX - canvas.getBoundingClientRect().left;
     const y = event.clientY - canvas.getBoundingClientRect().top;
-    
     const size = parseInt(document.getElementById("sizeInput").value, 10);
     const color = document.getElementById("colorInput").value;
     const shape = document.getElementById("shapeType").value;
@@ -85,5 +92,14 @@ canvas.addEventListener("click", (event) => {
     } else if (shape === "hand") {
         startDrawing(x, y, color, size);
     }
-
 });
+
+
+canvas.addEventListener("mousemove", (event) => {
+    const x = event.clientX - canvas.getBoundingClientRect().left;
+    const y = event.clientY - canvas.getBoundingClientRect().top;
+    drawLine(x, y);
+});
+
+canvas.addEventListener("mouseup", stopDrawing);
+canvas.addEventListener("mouseout", stopDrawing);
