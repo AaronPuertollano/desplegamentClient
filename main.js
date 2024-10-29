@@ -5,31 +5,47 @@
 const canvas = document.getElementById("myCanvas");
 const ctx = canvas.getContext("2d");
 let isDrawing = false;
+const shapes = [];
 
-const drawRect = (x, y, w, h, color) => {
+const drawRect = (x, y, w, h, color, filled) => {
     ctx.beginPath();
-    ctx.fillStyle = color;
-    ctx.fillRect(x, y, w, h);
-};
+    if (filled) {
+        ctx.fillStyle = color;
+        ctx.fillRect(x, y, w, h);
+    } else {
+        ctx.strokeStyle = color;
+        ctx.rect(x, y, w, h);
+        ctx.stroke();
+    }
+}; 
 
-const drawCircle = (x, y, radius, color) => {
+const drawCircle = (x, y, radius, color, filled) => {
     ctx.beginPath();
     ctx.arc(x, y, radius, 0, Math.PI * 2); 
     ctx.fillStyle = color;
-    ctx.fill();
+    ctx.strokeStyle = color;
+    if (filled) {
+        ctx.fill();
+    } else {
+        ctx.stroke();
+    }
     ctx.closePath();
 };
 
-const drawTriangle = (x, y, size, color) => {
+const drawTriangle = (x, y, size, color, filled) => {
     ctx.beginPath();
     ctx.moveTo(x, y); 
     ctx.lineTo(x - size / 2, y + size); 
     ctx.lineTo(x + size / 2, y + size); 
     ctx.closePath();
     ctx.fillStyle = color;
-    ctx.fill();
+    ctx.strokeStyle = color;
+    if (filled) {
+        ctx.fill();
+    } else {
+        ctx.stroke();
+    }
 };
-
 
 const startDrawing = (x, y, color, size) => {
     isDrawing = true;
@@ -50,7 +66,7 @@ const stopDrawing = () => {
     ctx.closePath();
 };
 
-const drawStar = (x, y, size, color) => {
+const drawStar = (x, y, size, color, filled) => {
     const points = 7;
     const outerRadius = size;
     const innerRadius = size / 2.5;
@@ -58,6 +74,7 @@ const drawStar = (x, y, size, color) => {
 
     ctx.beginPath();
     ctx.fillStyle = color;
+    ctx.strokeStyle = color;
 
     for (let i = 0; i < points * 2; i++) {
         const radius = i % 2 === 0 ? outerRadius : innerRadius;
@@ -71,7 +88,20 @@ const drawStar = (x, y, size, color) => {
     }
 
     ctx.closePath();
-    ctx.fill();
+    if (filled) {
+        ctx.fill();
+    } else {
+        ctx.stroke();
+    }
+};
+
+const updateShapeList = () => {
+    figureList.innerHTML = "";
+    shapes.forEach((shape, index) => {
+        const shapeItem = document.createElement("p");
+        shapeItem.innerText = `#${index + 1} - ${shape.type} | Color: ${shape.color} | Tamaño: ${shape.size} | Relleno: ${shape.filled ? "Sí" : "No"}`;
+        figureList.appendChild(shapeItem);
+    });
 };
 
 canvas.addEventListener("mousedown", (event) => {
@@ -79,19 +109,32 @@ canvas.addEventListener("mousedown", (event) => {
     const y = event.clientY - canvas.getBoundingClientRect().top;
     const size = parseInt(document.getElementById("sizeInput").value, 10);
     const color = document.getElementById("colorInput").value;
-    const shape = document.getElementById("shapeType").value;
+    const type = document.getElementById("shapeType").value;
+    const filled = document.getElementById("fillShape").value === "true";
 
-    if (shape === "square") {
-        drawRect(x, y, size, size, color);
-    } else if (shape === "circle") {
-        drawCircle(x, y, size / 2, color);
-    } else if (shape === "triangle") {
-        drawTriangle(x, y, size, color);
-    } else if (shape === "star") {
-        drawStar(x, y, size, color);
-    } else if (shape === "hand") {
+    if (type === "square") {
+        drawRect(x, y, size, size, color, filled);
+        shapes.push({ type: "square", x, y, size, color, filled });
+    } else if (type === "circle") {
+        drawCircle(x, y, size / 2, color, filled);
+        shapes.push({ type: "circle", x, y, radius: size / 2, color, filled });
+    } else if (type === "triangle") {
+        drawTriangle(x, y, size, color, filled);
+        shapes.push({ type: "triangle", x, y, size, color, filled });
+    } else if (type === "star") {
+        drawStar(x, y, size, color, filled);
+        shapes.push({ type: "star", x, y, size, color, filled });
+    } else if (type === "hand") {
         startDrawing(x, y, color, size);
     }
+
+    //let element = document.getElementById("inputobjectes");
+    //element.value = Object;
+    //json.stringyfy()
+    //hacer puch a la lista para almacenar las figuras
+
+    document.getElementById("inputobjectes").value = JSON.stringify(shapes);
+    updateShapeList();
 });
 
 
@@ -103,3 +146,7 @@ canvas.addEventListener("mousemove", (event) => {
 
 canvas.addEventListener("mouseup", stopDrawing);
 canvas.addEventListener("mouseout", stopDrawing);
+
+//bt elements = document.getelementbyid("inputobj")
+//element.value = objectes;
+//hacerlo cada vez que hay una modificación de canva

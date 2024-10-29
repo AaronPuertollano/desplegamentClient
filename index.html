@@ -52,6 +52,11 @@
             text-decoration: none;
             color: #000000;
         }
+
+        .content{
+            height: 62%;
+            background-color: rgb(248, 206, 155);
+        }
     </style>
 
 </head>
@@ -80,53 +85,63 @@
 
             <h2>Figures</h2>
 
+            <div class="content" id="figureList">
+                <!-- Aquí se mostrarán las figuras añadidas -->
+            </div>
+
             <div class="buton">
-                <button type="button" class="btn btn-primary">SAVE</button> 
+                <p>Name:</p>
+                <input type="text" name="namepaint">
+                <input type="hidden" name="stringobjectes" id="inputobjectes">
+                <input type="submit">
             </div>
 
         </div>
 
     </div>
 
-    
+    <div class="parameters">
+        <div>
+            <h4>TYPE</h4>
+            <select id="shapeType">
+                <option value="hand">HANDS UP</option>
+                <option value="square">SQUARE</option>
+                <option value="circle">CIRCLE</option>
+                <option value="triangle">TRIANGLE</option>
+                <option value="star">STAR</option>
+            </select>
+        </div>
+        <div>
+            <h4>COLOR</h4>
+            <select id="colorInput">
+                <option value="#000">BLACK</option>
+                <option value="#ff0000">RED</option>
+                <option value="#009bff">BLUE</option>
+                <option value="#00ff32">GREEN</option>
+                <option value="#ffd500">YELLOW</option>
+                <option value="#c900ff">PURPLE</option>
+                <option value="#996401">BROWN</option>
+            </select>
+        </div>
+        <div>
+            <h4>SIZE</h4>
+            <select id="sizeInput">
+                <option value="35">SMALL</option>
+                <option value="60">MEDIUM</option>
+                <option value="95">BIG</option>
+            </select>
+        </div>
+        <div>
+            <h4>FILL</h4>
+            
+            <select id="fillShape">
+                <option value="true">Yes</option>
+                <option value="false">No</option>
+            </select>
 
-<div class="parameters">
-    <div>
-        <h4>TYPE</h4>
-        <select id="shapeType">
-            <option value="hand">HANDS UP</option>
-            <option value="square">SQUARE</option>
-            <option value="circle">CIRCLE</option>
-            <option value="triangle">TRIANGLE</option>
-            <option value="star">STAR</option>
-        </select>
-    </div>
-    <div>
-        <h4>COLOR</h4>
-        <select id="colorInput">
-            <option value="#000">BLACK</option>
-            <option value="#ff0000">RED</option>
-            <option value="#009bff">BLUE</option>
-            <option value="#00ff32">GREEN</option>
-            <option value="#ffd500">YELLOW</option>
-            <option value="#c900ff">PURPLE</option>
-            <option value="#996401">BROWN</option>
-        </select>
-    </div>
-    <div>
-        <h4>SIZE</h4>
-        <select id="sizeInput">
-            <option value="35">SMALL</option>
-            <option value="60">MEDIUM</option>
-            <option value="95">BIG</option>
-        </select>
-    </div>
-    <div>
-        <h4>FILL</h4>
-        <input type="checkbox" id="fillShape">
-    </div>
+        </div>
 
-</div>
+    </div>
 
     <script type="module" src="./main.js"></script>
 </body>
