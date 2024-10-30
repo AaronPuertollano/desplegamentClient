@@ -99,7 +99,7 @@ const updateShapeList = () => {
     figureList.innerHTML = "";
     shapes.forEach((shape, index) => {
         const shapeItem = document.createElement("p");
-        shapeItem.innerText = `#${index + 1} - ${shape.type} | Color: ${shape.color} | Tamaño: ${shape.size} | Relleno: ${shape.filled ? "Sí" : "No"}`;
+        shapeItem.innerText = `#${index + 1} - ${shape.type} | Color: ${shape.color}`;
         figureList.appendChild(shapeItem);
     });
 };
@@ -128,6 +128,7 @@ canvas.addEventListener("mousedown", (event) => {
         startDrawing(x, y, color, size);
     }
 
+
     //let element = document.getElementById("inputobjectes");
     //element.value = Object;
     //json.stringyfy()
@@ -146,7 +147,3 @@ canvas.addEventListener("mousemove", (event) => {
 
 canvas.addEventListener("mouseup", stopDrawing);
 canvas.addEventListener("mouseout", stopDrawing);
-
-//bt elements = document.getelementbyid("inputobj")
-//element.value = objectes;
-//hacerlo cada vez que hay una modificación de canva
