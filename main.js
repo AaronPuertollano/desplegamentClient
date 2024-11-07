@@ -2,6 +2,7 @@
 //JSON.stringify para lo contrario
 //para borrar una figura habra que hacer un redibujo con todas la figuras menos la que hemos borrado
 
+document.getElementById("saveButton").addEventListener("click", handleSaveDrawing);
 const canvas = document.getElementById("myCanvas");
 const ctx = canvas.getContext("2d");
 let isDrawing = false;
@@ -98,9 +99,40 @@ const drawStar = (x, y, size, color, filled) => {
 const updateShapeList = () => {
     figureList.innerHTML = "";
     shapes.forEach((shape, index) => {
+
         const shapeItem = document.createElement("p");
-        shapeItem.innerText = `#${index + 1} - ${shape.type} | Color: ${shape.color}`;
+        
+        shapeItem.innerText = `${index + 1} | Form: ${shape.type} | Color: ${shape.color} | Size: ${shape.size} `;
+
+        const deleteButton = document.createElement("button");
+        deleteButton.innerText = "X";
+        deleteButton.style.marginLeft = "10px"; 
+
+        deleteButton.addEventListener("click", () => {
+            shapes.splice(index, 1); 
+            updateShapeList(); 
+            redrawCanvas(); 
+        });
+
+  
+        shapeItem.appendChild(deleteButton);
         figureList.appendChild(shapeItem);
+    });
+};
+
+const redrawCanvas = () => {
+    ctx.clearRect(0, 0, canvas.width, canvas.height); 
+    shapes.forEach(shape => {
+        
+        if (shape.type === "square") {
+            drawRect(shape.x, shape.y, shape.size, shape.size, shape.color, shape.filled);
+        } else if (shape.type === "circle") {
+            drawCircle(shape.x, shape.y, shape.size / 2, shape.color, shape.filled);
+        } else if (shape.type === "triangle") {
+            drawTriangle(shape.x, shape.y, shape.size, shape.color, shape.filled);
+        } else if (shape.type === "star") {
+            drawStar(shape.x, shape.y, shape.size, shape.color, shape.filled);
+        }
     });
 };
 
@@ -117,7 +149,7 @@ canvas.addEventListener("mousedown", (event) => {
         shapes.push({ type: "square", x, y, size, color, filled });
     } else if (type === "circle") {
         drawCircle(x, y, size / 2, color, filled);
-        shapes.push({ type: "circle", x, y, radius: size / 2, color, filled });
+        shapes.push({ type: "circle", x, y, size, color, filled });
     } else if (type === "triangle") {
         drawTriangle(x, y, size, color, filled);
         shapes.push({ type: "triangle", x, y, size, color, filled });
@@ -128,16 +160,9 @@ canvas.addEventListener("mousedown", (event) => {
         startDrawing(x, y, color, size);
     }
 
-
-    //let element = document.getElementById("inputobjectes");
-    //element.value = Object;
-    //json.stringyfy()
-    //hacer puch a la lista para almacenar las figuras
-
     document.getElementById("inputobjectes").value = JSON.stringify(shapes);
     updateShapeList();
 });
-
 
 canvas.addEventListener("mousemove", (event) => {
     const x = event.clientX - canvas.getBoundingClientRect().left;
@@ -147,3 +172,41 @@ canvas.addEventListener("mousemove", (event) => {
 
 canvas.addEventListener("mouseup", stopDrawing);
 canvas.addEventListener("mouseout", stopDrawing);
+
+
+function handleSaveDrawing() {
+    const drawingName = document.getElementById("namepaint").value;
+    const shapesData = JSON.stringify(shapes);  // Convert shapes to JSON string
+
+    if (!drawingName || shapes.length === 0) {
+        alert("Please provide a name and add at least one shape before saving.");
+        return;
+    }
+
+    // Crear el objeto FormData para enviar los datos
+    const formData = new FormData();
+    formData.append("name", drawingName);
+    formData.append("paints", shapesData);
+
+    fetch("/save-drawing", {
+        method: "POST",
+        body: formData,
+    })
+    .then(response => response.json())  // Asume que el servidor responde con JSON
+    .then(data => {
+        if (data.success) {
+            alert("Drawing saved successfully!");
+        } else {
+            alert("There was an error saving your drawing.");
+        }
+    })
+    .catch(error => {
+        console.error("Error:", error);
+        alert("Could not connect to the server.");
+    });
+
+    /*
+    <script type="application/json" id="datajson">
+        ${jsondata}
+    </script> */
+}

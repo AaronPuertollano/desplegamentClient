@@ -11,6 +11,7 @@
         body{
             background-color: bisque;
         }
+        
         header {
             display: flex;
             justify-content: center;
@@ -34,6 +35,7 @@
     
         header h3 {
             margin: 0;
+            font-weight: normal;
         }
     
         canvas{
@@ -91,11 +93,11 @@
                 <!-- Aquí se mostrarán las figuras añadidas -->
             </div>
 
-            <div class="buton">
+            <div class="butonfinish">
                 <p>Name:</p>
-                <input type="text" name="namepaint">
+                <input type="text" id="namepaint" name="namepaint" placeholder="Enter drawing name">
                 <input type="hidden" name="stringobjectes" id="inputobjectes">
-                <input type="submit">
+                <button type="button" id="saveButton">Save Drawing</button>
             </div>
 
         </div>
@@ -106,11 +108,11 @@
         <div>
             <h4>TYPE</h4>
             <select id="shapeType">
-                <option value="hand">HANDS UP</option>
                 <option value="square">SQUARE</option>
                 <option value="circle">CIRCLE</option>
                 <option value="triangle">TRIANGLE</option>
                 <option value="star">STAR</option>
+                <option value="hand">HANDS UP</option>
             </select>
         </div>
         <div>

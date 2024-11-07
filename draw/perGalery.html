@@ -1,0 +1,111 @@
+<html>
+<body>
+    <style>
+        
+        body {
+            background-color: bisque;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            text-align: center;
+            margin: 20px 0 50px 0;
+            padding: 10px;
+        }
+
+        header h3 {
+            margin: 0;
+            font-weight: normal;
+        }
+
+        a {
+            text-decoration: none;
+            color: #000;
+            font-weight: bold;
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        .gallery-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .gallery-item {
+            background-color: #fff;
+            border: 3px solid #000;
+            overflow: hidden;
+            width: 200px;
+            text-align: center;
+            transition: transform 0.2s;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.05);
+        }
+
+    </style>
+
+    <header>
+        <h3>
+            <a href="/login">LOGIN</a>
+        </h3>
+        <h3>
+            <a href="/paint">PAINT</a>
+        </h3>
+        <h3>
+            <a href="/pergalery">MY GALERY</a>
+        </h3>
+        <h3>
+            <a href="/pubgalery">PUBLIC GALERY</a>
+        </h3>
+    </header>
+
+    <h2>Public Gallery</h2>
+
+    <div class="gallery-container" id="gallery-container">
+        <!-- Aquí se insertarán las imágenes de la galería personal -->
+    </div>
+
+    <script type="application/json" id="datajson">
+        [{"name":"a","data":"[{\"type\":\"square\",\"x\":430,\"y\":196,\"size\":35,\"color\":\"#000\",\"filled\":true}]","owner":"a"}]
+    </script>
+    
+
+    <script>
+        // Obtener el JSON desde el script
+        const jsonData = document.getElementById('datajson').textContent;
+        const galleryItems = JSON.parse(jsonData); // Parsear el JSON
+    
+        const galleryContainer = document.getElementById('gallery-container');
+    
+        // Iterar sobre los elementos del JSON
+        galleryItems.forEach(item => {
+            // Crear un nuevo elemento de galería para cada objeto
+            const galleryItem = document.createElement('div');
+            galleryItem.classList.add('gallery-item');
+    
+            // Crear el contenido del elemento
+            galleryItem.innerHTML = `
+                <h3>Name: ${item.name}</h3>
+                <p>Owner: ${item.owner}</p>
+            `;
+    
+            // Añadir el nuevo elemento al contenedor de la galería
+            galleryContainer.appendChild(galleryItem);
+        });
+    </script>
+
+    <h1>122 - Aaron Puertollano</h1>
+
+</body>
+</html>
