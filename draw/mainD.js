@@ -121,6 +121,7 @@ const updateShapeList = () => {
                 const newColor = document.getElementById("colorInput").value;
                 const newSize = parseInt(document.getElementById("sizeInput").value, 10);
                 const newFill = document.getElementById("fillShape").value === "true";
+                
 
                 shapes[index].color = newColor;
                 shapes[index].size = newSize;
@@ -164,6 +165,16 @@ const saveShapesToLocalStorage = () => {
 };
 
 document.addEventListener("DOMContentLoaded", () => {
+    const savedShapes = localStorage.getItem("shapes");
+    
+    if (savedShapes) {
+        shapes.push(...JSON.parse(savedShapes));
+        redrawCanvas();  
+        updateShapeList();  
+    }
+});
+
+document.addEventListener("DOMContentLoaded", () => {
     if (shapes.length) {
         redrawCanvas();
         updateShapeList();
@@ -173,31 +184,39 @@ document.addEventListener("DOMContentLoaded", () => {
 canvas.addEventListener("mousedown", (event) => {
     const x = event.clientX - canvas.getBoundingClientRect().left;
     const y = event.clientY - canvas.getBoundingClientRect().top;
-    const size = parseInt(document.getElementById("sizeInput").value, 10);
-    const color = document.getElementById("colorInput").value;
-    const type = document.getElementById("shapeType").value;
-    const filled = document.getElementById("fillShape").value === "true";
 
-    if (type === "square") {
-        drawRect(x, y, size, size, color, filled);
-        shapes.push({ type: "square", x, y, size, color, filled });
-    } else if (type === "circle") {
-        drawCircle(x, y, size / 2, color, filled);
-        shapes.push({ type: "circle", x, y, size, color, filled });
-    } else if (type === "triangle") {
-        drawTriangle(x, y, size, color, filled);
-        shapes.push({ type: "triangle", x, y, size, color, filled });
-    } else if (type === "star") {
-        drawStar(x, y, size, color, filled);
-        shapes.push({ type: "star", x, y, size, color, filled });
-    } else if (type === "hand") {
-        startDrawing(x, y, color, size);
-        shapes.push({ type: "hand", x, y, color, size});
+// Depenent si estam en mode edició el canvas fara una cosa o altre
+    if (editingShapeIndex !== null) {
+        shapes[editingShapeIndex].x = x;
+        shapes[editingShapeIndex].y = y;
+
+        updateShapeList();
+        redrawCanvas();
+        saveShapesToLocalStorage();
+    } else {
+        const size = parseInt(document.getElementById("sizeInput").value, 10);
+        const color = document.getElementById("colorInput").value;
+        const type = document.getElementById("shapeType").value;
+        const filled = document.getElementById("fillShape").value === "true";
+
+        if (type === "square") {
+            drawRect(x, y, size, size, color, filled);
+            shapes.push({ type: "square", x, y, size, color, filled });
+        } else if (type === "circle") {
+            drawCircle(x, y, size / 2, color, filled);
+            shapes.push({ type: "circle", x, y, size, color, filled });
+        } else if (type === "triangle") {
+            drawTriangle(x, y, size, color, filled);
+            shapes.push({ type: "triangle", x, y, size, color, filled });
+        } else if (type === "star") {
+            drawStar(x, y, size, color, filled);
+            shapes.push({ type: "star", x, y, size, color, filled });
+        }
+
+        document.getElementById("inputobjectes").value = JSON.stringify(shapes);
+        updateShapeList();
+        saveShapesToLocalStorage();
     }
-
-    document.getElementById("inputobjectes").value = JSON.stringify(shapes);
-    updateShapeList();
-    saveShapesToLocalStorage();
 });
 
 canvas.addEventListener("mousemove", (event) => {
@@ -257,3 +276,7 @@ const editMode = (index) => {
     editingShapeIndex = index;
     updateShapeList(); 
 };
+
+//localestorage
+
+
