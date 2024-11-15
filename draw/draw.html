@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script svc=""></script>
+
+    <style>
+
+        body{
+            background-color: bisque;
+        }
+        
+        header {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .contingut{
+            display: flex;
+        }
+
+        .list{
+            background-color: aliceblue;
+            width: 35%;
+            text-align: center;
+            margin-left: 25px;
+            border-style: solid;
+            border-color: #000000;
+        }
+    
+        header h3 {
+            margin: 0;
+            font-weight: normal;
+        }
+    
+        canvas{
+            margin-left: 30px;
+            background-color: aliceblue;
+        }
+    
+        .parameters{
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            text-align: center;
+        }
+
+        a{
+            text-decoration: none;
+            color: #000000;
+        }
+
+        .content{
+            height: 62%;
+            background-color: rgb(248, 206, 155);
+            height: 250px; 
+            overflow-y: auto;
+        }
+    </style>
+
+</head>
+<body>
+   
+    <header>
+        <h3>
+            <a href="/login">LOGIN</a>
+        </h3>
+        <h3>
+            <a href="/paint">PAINT</a>
+        </h3>
+        <h3>
+            <a href="/pergalery">MY GALERY</a>
+        </h3>
+        <h3>
+            <a href="/pubgalery">PUBLIC GALERY</a>
+        </h3>
+    </header>
+
+    <div class="contingut">
+
+        <canvas id="myCanvas" width="600" height="400" style="border:3px solid #000000;"></canvas>
+
+        <div class="list">
+
+            <h2>Figures</h2>
+
+            <div class="content" id="figureList">
+                <!-- Aquí se mostrarán las figuras añadidas -->
+            </div>
+
+            <div class="butonfinish">
+                <p>Name:</p>
+                <input type="text" id="namepaint" name="namepaint" placeholder="Put a name now">
+                <input type="hidden" name="stringobjectes" id="inputobjectes">
+                <button type="button" id="saveButton">Save Drawing</button>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="parameters">
+        <div>
+            <h4>TYPE</h4>
+            <select id="shapeType">
+                <option value="square">SQUARE</option>
+                <option value="circle">CIRCLE</option>
+                <option value="triangle">TRIANGLE</option>
+                <option value="star">STAR</option>
+                <option value="hand">HANDS UP</option>
+            </select>
+        </div>
+        <div>
+            <h4>COLOR</h4>
+            <select id="colorInput">
+                <option value="#000">BLACK</option>
+                <option value="#ff0000">RED</option>
+                <option value="#009bff">BLUE</option>
+                <option value="#00ff32">GREEN</option>
+                <option value="#ffd500">YELLOW</option>
+                <option value="#c900ff">PURPLE</option>
+                <option value="#996401">BROWN</option>
+            </select>
+        </div>
+        <div>
+            <h4>SIZE</h4>
+            <select id="sizeInput">
+                <option value="35">SMALL</option>
+                <option value="60">MEDIUM</option>
+                <option value="95">BIG</option>
+            </select>
+        </div>
+        <div>
+            <h4>FILL</h4>
+            
+            <select id="fillShape">
+                <option value="true">Yes</option>
+                <option value="false">No</option>
+            </select>
+
+        </div>
+
+    </div>
+
+    <script type="module" src="./mainD.js"></script>
+</body>
+
+
+</html>

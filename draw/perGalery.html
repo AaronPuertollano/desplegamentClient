@@ -77,35 +77,41 @@
     </div>
 
     <script type="application/json" id="datajson">
-        [{"name":"a","data":"[{\"type\":\"square\",\"x\":430,\"y\":196,\"size\":35,\"color\":\"#000\",\"filled\":true}]","owner":"a"}]
+        [Paint{name='a', data='[{"type":"square","x":485,"y":94,"size":35,"color":"#000","filled":true},{"type":"square","x":388,"y":245,"size":35,"color":"#000","filled":true},{"type":"square","x":266,"y":53,"size":35,"color":"#000","filled":true},{"type":"square","x":93,"y":228,"size":35,"color":"#000","filled":true}]', owner='a'}]
     </script>
     
 
     <script>
-        // Obtener el JSON desde el script
-        const jsonData = document.getElementById('datajson').textContent;
-        const galleryItems = JSON.parse(jsonData); // Parsear el JSON
-    
-        const galleryContainer = document.getElementById('gallery-container');
-    
-        // Iterar sobre los elementos del JSON
-        galleryItems.forEach(item => {
-            // Crear un nuevo elemento de galería para cada objeto
-            const galleryItem = document.createElement('div');
-            galleryItem.classList.add('gallery-item');
-    
-            // Crear el contenido del elemento
-            galleryItem.innerHTML = `
-                <h3>Name: ${item.name}</h3>
-                <p>Owner: ${item.owner}</p>
-            `;
-    
-            // Añadir el nuevo elemento al contenedor de la galería
-            galleryContainer.appendChild(galleryItem);
-        });
-    </script>
+        // Capturam el JSON
+        const jsonData = document.getElementById('datajson').textContent.trim(); // Asegurarse de que no haya espacios en blanco
 
-    <h1>122 - Aaron Puertollano</h1>
+     try {
+
+         const galleryItems = JSON.parse(jsonData);
+         console.log("Datos de la galería parseados:", galleryItems); // Verificación en consola
+         const galleryContainer = document.getElementById('gallery-container');
+
+         galleryItems.forEach(paint => {
+
+             const galleryItem = document.createElement('div');
+             galleryItem.classList.add('gallery-item');
+
+             galleryItem.innerHTML = `
+                 <h3>Name: \${paint.name}</h3>
+                 <p>Owner: \${paint.owner}</p>
+                 <canvas width="350" height="350"></canvas>
+             `;
+
+             galleryContainer.appendChild(galleryItem);
+         });
+     } catch (error) {
+         console.error("Error al parsear JSON:", error);
+     }
+
+
+
+</script>
+
 
 </body>
 </html>
