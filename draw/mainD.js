@@ -120,8 +120,11 @@ const updateShapeList = () => {
                 // Guarda
                 const newColor = document.getElementById("colorInput").value;
                 const newSize = parseInt(document.getElementById("sizeInput").value, 10);
+                const newFill = document.getElementById("fillShape").value === "true";
+
                 shapes[index].color = newColor;
                 shapes[index].size = newSize;
+                shapes[index].filled = newFill;
                 editingShapeIndex = null;
             } else {
                 editMode(index); // Activa mode edició
