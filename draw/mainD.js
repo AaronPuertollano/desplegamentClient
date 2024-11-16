@@ -291,29 +291,48 @@ document.getElementById("deleteButton").addEventListener("click", () => {
 
 });
 
-// Historial de estados
+// Historial
 const historyStack = [];
+const redoStack = [];
 
-// Guarda el estado actual antes de realizar cambios
+// Guarda el estat actual
 const saveToHistory = () => {
-    historyStack.push(JSON.stringify(shapes)); // Guarda una copia del estado actual
-    if (historyStack.length > 50) {
-        historyStack.shift(); // Limita el historial a 50 estados para evitar desbordamiento
+    historyStack.push(JSON.stringify(shapes)); 
+    if (historyStack.length > 25) {
+        historyStack.shift();
     }
+    redoStack.length = 0;
 };
 
-// Retrocede al estado anterior
+// Retrocedeix al estat anterior
 document.getElementById("left").addEventListener("click", () => {
     if (historyStack.length === 0) {
         alert("No previous state to revert to.");
         return;
     }
 
-    const previousState = historyStack.pop(); // Recupera el último estado
-    shapes.length = 0; // Limpia el arreglo actual
-    shapes.push(...JSON.parse(previousState)); // Restaura el estado anterior
+    redoStack.push(JSON.stringify(shapes));
+    const previousState = historyStack.pop(); 
+    shapes.length = 0; 
+    shapes.push(...JSON.parse(previousState));
 
-    // Actualiza el canvas y la lista
+    redrawCanvas();
+    updateShapeList();
+});
+
+// Avança el estat
+document.getElementById("right").addEventListener("click", () => {
+    if (redoStack.length === 0) {
+        alert("No future state to redo.");
+        return;
+    }
+
+    
+    historyStack.push(JSON.stringify(shapes));
+    const nextState = redoStack.pop(); 
+    shapes.length = 0; 
+    shapes.push(...JSON.parse(nextState));
+
     redrawCanvas();
     updateShapeList();
 });
