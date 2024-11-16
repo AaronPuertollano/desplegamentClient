@@ -1,4 +1,6 @@
 document.getElementById("saveButton").addEventListener("click", handleSaveDrawing);
+
+
 const canvas = document.getElementById("myCanvas");
 const ctx = canvas.getContext("2d");
 let isDrawing = false;
@@ -109,20 +111,22 @@ const updateShapeList = () => {
         editButton.style.marginLeft = "10px"; 
 
         deleteButton.addEventListener("click", () => {
+            saveToHistory();
             shapes.splice(index, 1); 
             updateShapeList(); 
             redrawCanvas(); 
             saveShapesToLocalStorage();
+            
         });
 
         editButton.addEventListener("click", () => {
+            saveToHistory();
             if (editingShapeIndex === index) {
                 // Guarda
                 const newColor = document.getElementById("colorInput").value;
                 const newSize = parseInt(document.getElementById("sizeInput").value, 10);
                 const newFill = document.getElementById("fillShape").value === "true";
                 
-
                 shapes[index].color = newColor;
                 shapes[index].size = newSize;
                 shapes[index].filled = newFill;
@@ -182,6 +186,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 canvas.addEventListener("mousedown", (event) => {
+    saveToHistory();
     const x = event.clientX - canvas.getBoundingClientRect().left;
     const y = event.clientY - canvas.getBoundingClientRect().top;
 
@@ -277,6 +282,38 @@ const editMode = (index) => {
     updateShapeList(); 
 };
 
-//localestorage
+document.getElementById("deleteButton").addEventListener("click", () => {
+    saveToHistory();
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    shapes.length = 0;
+    localStorage.removeItem("shapes");
+    updateShapeList();
 
+});
 
+// Historial de estados
+const historyStack = [];
+
+// Guarda el estado actual antes de realizar cambios
+const saveToHistory = () => {
+    historyStack.push(JSON.stringify(shapes)); // Guarda una copia del estado actual
+    if (historyStack.length > 50) {
+        historyStack.shift(); // Limita el historial a 50 estados para evitar desbordamiento
+    }
+};
+
+// Retrocede al estado anterior
+document.getElementById("left").addEventListener("click", () => {
+    if (historyStack.length === 0) {
+        alert("No previous state to revert to.");
+        return;
+    }
+
+    const previousState = historyStack.pop(); // Recupera el último estado
+    shapes.length = 0; // Limpia el arreglo actual
+    shapes.push(...JSON.parse(previousState)); // Restaura el estado anterior
+
+    // Actualiza el canvas y la lista
+    redrawCanvas();
+    updateShapeList();
+});

@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <script svc=""></script>
 
     <style>
 
@@ -94,10 +93,13 @@
             </div>
 
             <div class="butonfinish">
-                <p>Name:</p>
-                <input type="text" id="namepaint" name="namepaint" placeholder="Put a name now">
+                <p>Name: <input type="text" id="namepaint" name="namepaint" placeholder="Put a name now"></p>
+                
                 <input type="hidden" name="stringobjectes" id="inputobjectes">
                 <button type="button" id="saveButton">Save Drawing</button>
+                <button type="button" id="deleteButton">Delete all</button>
+                <button type="button" id="left">←</button>
+                <button type="button" id="right">→</button>
             </div>
 
         </div>
@@ -106,9 +108,9 @@
 
     <div class="parameters">
         <div>
-            <h4>TYPE</h4>
+            <h4>MODE</h4>
             <select id="shapeType">
-                <option value="selectshape">EDIT SHAPE</option>
+                <option value="selectshape">SELECT SHAPE</option>
                 <option value="square">SQUARE</option>
                 <option value="circle">CIRCLE</option>
                 <option value="triangle">TRIANGLE</option>
