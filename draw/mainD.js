@@ -120,9 +120,13 @@ const updateShapeList = () => {
         });
 
         editButton.addEventListener("click", () => {
-            saveToHistory();
+            
             if (editingShapeIndex === index) {
-                // Guarda
+                saveToHistory();
+                // Aplica valors del shape al select
+
+
+                // Guarda i aplica valors
                 const newColor = document.getElementById("colorInput").value;
                 const newSize = parseInt(document.getElementById("sizeInput").value, 10);
                 const newFill = document.getElementById("fillShape").value === "true";
@@ -327,7 +331,6 @@ document.getElementById("right").addEventListener("click", () => {
         return;
     }
 
-    
     historyStack.push(JSON.stringify(shapes));
     const nextState = redoStack.pop(); 
     shapes.length = 0; 
