@@ -229,9 +229,7 @@ canvas.addEventListener("mousedown", (event) => {
             drawStar(x, y, size, color, filled);
             shapes.push({ type: "star", x, y, size, color, filled });
         } else if (type === "selectshape") {
-            if(isCursorWithinRectangle()){
-                
-            }
+            
         }
 
         document.getElementById("inputobjectes").value = JSON.stringify(shapes);
