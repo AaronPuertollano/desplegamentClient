@@ -1,6 +1,5 @@
 document.getElementById("saveButton").addEventListener("click", handleSaveDrawing);
 
-
 const canvas = document.getElementById("myCanvas");
 const ctx = canvas.getContext("2d");
 let isDrawing = false;
@@ -123,9 +122,7 @@ const updateShapeList = () => {
             
             if (editingShapeIndex === index) {
                 saveToHistory();
-                // Aplica valors del shape al select
-
-
+                
                 // Guarda i aplica valors
                 const newColor = document.getElementById("colorInput").value;
                 const newSize = parseInt(document.getElementById("sizeInput").value, 10);
@@ -137,6 +134,17 @@ const updateShapeList = () => {
                 editingShapeIndex = null;
             } else {
                 editMode(index); // Activa mode edició
+
+                // Aplica valors del shape als selects
+
+                const shapeColor = shapes[index].color;
+                const shapeSize = shapes[index].size;
+                const shapeFill = shapes[index].filled;
+
+                document.getElementById("colorInput").value = shapeColor;
+                document.getElementById("fillShape").value = shapeFill;
+                document.getElementById("sizeInput").value = shapeSize;
+
             }
             updateShapeList(); 
             redrawCanvas(); 
@@ -220,6 +228,10 @@ canvas.addEventListener("mousedown", (event) => {
         } else if (type === "star") {
             drawStar(x, y, size, color, filled);
             shapes.push({ type: "star", x, y, size, color, filled });
+        } else if (type === "selectshape") {
+            if(isCursorWithinRectangle()){
+                
+            }
         }
 
         document.getElementById("inputobjectes").value = JSON.stringify(shapes);
@@ -339,3 +351,6 @@ document.getElementById("right").addEventListener("click", () => {
     redrawCanvas();
     updateShapeList();
 });
+
+//detectar shapes
+
