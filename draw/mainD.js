@@ -229,7 +229,25 @@ canvas.addEventListener("mousedown", (event) => {
             drawStar(x, y, size, color, filled);
             shapes.push({ type: "star", x, y, size, color, filled });
         } else if (type === "selectshape") {
-            
+            for (let i = shapes.length - 1; i >= 0; i--) {
+                        const shape = shapes[i];
+                        let isInside = false;
+
+                        if (shape.type === "square") {
+                            isInside = isPointInRect(x, y, shape);
+                        } else if (shape.type === "circle") {
+                            isInside = isPointInCircle(x, y, shape);
+                        } else if (shape.type === "triangle") {
+                            isInside = isPointInTriangle(x, y, shape);
+                        } else if (shape.type === "star") {
+                            isInside = isPointInStar(x, y, shape);
+                        }
+
+                        if (isInside) {
+                            alert(`Hiciste clic en un ${shape.type} de color ${shape.color}`);
+                            return;
+                        }
+                    }
         }
 
         document.getElementById("inputobjectes").value = JSON.stringify(shapes);
@@ -250,35 +268,35 @@ canvas.addEventListener("mouseout", stopDrawing);
 
 function handleSaveDrawing() {
     const drawingName = document.getElementById("namepaint").value;
-    const shapesData = JSON.stringify(shapes);  // Convert shapes to JSON string
+    const shapesData = JSON.stringify(shapes);
 
-    if (!drawingName || shapes.length === 0) {
-        alert("Please provide a name and add at least one shape before saving.");
+    if (shapes.length === 0) {
+        alert("Please add at least one shape before saving.");
         return;
     }
 
-    // Crear el objeto FormData para enviar los datos
+    // Cream el objete FormData
     const formData = new FormData();
     formData.append("name", drawingName);
-    formData.append("paints", shapesData);
+    formData.append("drawingData", shapesData);
 
-    fetch("/save-drawing", {
+    fetch("/paint", {
         method: "POST",
-        body: formData,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: drawingName, drawingData: shapesData }),
     })
-    .then(response => response.json()) 
+    .then(response => response.json())
     .then(data => {
         if (data.success) {
-            alert("Drawing saved successfully!");
+            alert("Drawing saved!");
+            window.location.href = data.redirect;
         } else {
-            alert("There was an error saving your drawing.");
+            alert("Server error: " + data.message);
         }
     })
     .catch(error => {
-        console.error("Error:", error);
-        alert("Could not connect to the server.");
+        alert("Failed to connect to the server.");
     });
-
 }
 
 let editingShapeIndex = null; 
@@ -350,5 +368,35 @@ document.getElementById("right").addEventListener("click", () => {
     updateShapeList();
 });
 
-//detectar shapes
+const isPointInRect = (x, y, rect) => {
+    return x >= rect.x && x <= rect.x + rect.size &&
+           y >= rect.y && y <= rect.y + rect.size;
+};
+
+const isPointInCircle = (x, y, circle) => {
+    const dx = x - circle.x;
+    const dy = y - circle.y;
+    return Math.sqrt(dx * dx + dy * dy) <= circle.size / 2;
+};
+
+const isPointInTriangle = (x, y, triangle) => {
+    const { x: tx, y: ty, size } = triangle;
+    const x1 = tx, y1 = ty;
+    const x2 = tx - size / 2, y2 = ty + size;
+    const x3 = tx + size / 2, y3 = ty + size;
+
+    const area = Math.abs((x1*(y2-y3) + x2*(y3-y1) + x3*(y1-y2)) / 2.0);
+    const area1 = Math.abs((x*(y2-y3) + x2*(y3-y) + x3*(y-y2)) / 2.0);
+    const area2 = Math.abs((x1*(y-y3) + x*(y3-y1) + x3*(y1-y)) / 2.0);
+    const area3 = Math.abs((x1*(y2-y) + x2*(y-y1) + x*(y1-y2)) / 2.0);
+
+    return (area === area1 + area2 + area3);
+};
+
+const isPointInStar = (x, y, star) => {
+    const dx = x - star.x;
+    const dy = y - star.y;
+    const distance = Math.sqrt(dx * dx + dy * dy);
+    return distance <= star.size;
+};
 
