@@ -244,7 +244,18 @@ canvas.addEventListener("mousedown", (event) => {
                         }
 
                         if (isInside) {
-                            alert(`Hiciste clic en un ${shape.type} de color ${shape.color}`);
+
+                            editingShapeIndex = i;
+
+                            const shapeColor = shape.color;
+                            const shapeSize = shape.size;
+                            const shapeFill = shape.filled;
+
+                            document.getElementById("colorInput").value = shapeColor;
+                            document.getElementById("sizeInput").value = shapeSize;
+                            document.getElementById("fillShape").value = shapeFill;
+
+                            updateShapeList();
                             return;
                         }
                     }
