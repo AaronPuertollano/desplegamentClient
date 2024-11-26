@@ -380,8 +380,7 @@ document.getElementById("right").addEventListener("click", () => {
 });
 
 const isPointInRect = (x, y, rect) => {
-    return x >= rect.x && x <= rect.x + rect.size &&
-           y >= rect.y && y <= rect.y + rect.size;
+    return x >= rect.x && x <= rect.x + rect.size && y >= rect.y && y <= rect.y + rect.size;
 };
 
 const isPointInCircle = (x, y, circle) => {

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Juego en Progreso</title>
+  <style>
+        canvas {
+            border: 2px solid black;
+            display: block;
+            margin: 20px auto;
+            background-color: rgb(179, 231, 181);
+        }
+
+        body{
+            margin: 0;
+            padding: 0;
+            background-color: rgb(243, 243, 224);
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+        }
+
+        .info{
+            background-color: rgb(179, 231, 181);
+            width: 25%;
+            height: 450px;
+            margin-left: 20px;
+            border-style: double;
+            border-color: rgb(8, 8, 8);
+            margin-right: 20px;
+        }
+
+        .game{
+            width: 45%;
+        }
+
+        .content{
+            display: flex;
+            flex-direction: row;
+        }
+
+        .options{
+            text-align: center;
+        }
+
+        .options > button{
+            color: rgb(179, 231, 181);
+            background-color: black;
+            padding: 18px;
+            margin: 5px;
+        }
+
+        button{
+            background-color: rgb(245, 117, 117);
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .titulo{
+            text-align: center;
+        }
+
+        .data{
+            margin-top: 25px;
+            margin-bottom: 45px;
+            margin-left: 15px;
+        }
+
+        h2{
+            text-align: center;
+        }
+
+        .speak{
+            text-align: center;
+            border-style: double;
+            border-color: rgb(8, 8, 8);
+            background-color: black;
+            color: rgb(179, 231, 181);
+            margin-bottom: 15px;
+        }
+
+        .control{
+            margin-left: 35px;
+            text-align: center;
+        }
+
+        .control > div > button{
+            margin: 10px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="titulo">
+        <h1>Juego en Progreso</h1>
+        <p th:text="'Bienvenido, ' + ${user} + '! Actualmente estás en el Maze: ' + ${mazeName}"></p>
+    </div>
+  
+    <div class="content">
+
+        <div class="info">
+
+            <h2>INFORMATION</h2>
+
+            <div class="data">
+
+                <p>Room:</p>
+                <p>Time:</p>
+                <p>Coins:</p>
+                <p>Keys A:</p>
+                <p>Keys B:</p>
+          
+            </div>
+
+            <div class="speak">
+                <p>CUIDADO: MONEDAS INSUFUCUENTES!</p>
+            </div>
+
+            <div class="options">
+                <button type="button" id="restart">RESTART</button>
+                <button type="button" id="exit">EXIT</button>
+            </div>
+        
+        </div>
+      
+        <div class="game">
+          <canvas id="gameCanvas" width="550" height="450"></canvas>
+        </div>
+        
+        
+      
+        <div class="control">
+
+            <div>
+                <canvas id="decorationCanvas" width="150" height="150"></canvas>
+            </div>
+
+            <div>
+                <button type="button" id="up">UP</button>
+            </div>
+            <div>
+                <button type="button" id="left">LEFT</button>
+                <button type="button" id="right">RIGHT</button>
+            </div>
+            <div>
+                <button type="button" id="down">DOWN</button>
+            </div>
+        </div>
+
+    </div>
+
+
+  <script>
+
+    //EL USUARIO TIENE QUE COMUNICAR CON EL SERVIDOR CADA VEZ QUE ITERACTUE CON UNA PUERTA U OBJETO, EL ONJETO SE DEBE COMPROBAR
+    //EN EL SERVIDOR ANTES DE OBTENERLO, ES MEDIANTE JSON!
+
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+
+        ctx.fillStyle = "black";
+        ctx.fillRect(0, 0, 40, 550);
+        ctx.fillRect(0, 0, 550, 40);
+        ctx.fillRect(510, 0, 40, 550);
+        ctx.fillRect(0, 410, 550, 40);
+
+
+
+
+    </script>
+</body>
+</html>

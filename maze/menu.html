@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Menu</title>
+</head>
+<body>
+
+    <style>
+        body{
+            margin: 0;
+            padding: 0;
+            background-color: rgb(243, 243, 224);
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+        }
+
+        .description{
+            margin: 0 auto;
+            text-align: center;
+            width: 650px;
+            height: 275px;
+            background-color: rgb(179, 231, 181);
+            border-style: double;
+            border-color: rgb(8, 8, 8);
+            border-radius: 10px;
+        }
+
+        a{
+            text-decoration: none;
+            color: black;
+            background-color: rgb(245, 117, 117);
+            padding: 8px;
+            border-style: outset;
+            border-color: black;
+            border-radius: 10px;
+        }
+
+        button{
+            background-color: rgb(245, 117, 117);
+            padding: 12px;
+            border-radius: 10px;
+        }
+
+        h1{
+            color: blue;
+            font-style: italic;
+            margin-left: 20px;
+        }
+
+        .options{
+            margin-top: 35px;
+            background-color: aqua;
+            width: 80%;
+            display: flex;
+            flex-direction: row;
+            margin: 0 auto;
+        }
+
+        .decoration{
+            color: rgb(49, 49, 48);
+            width: 550px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+    </style>
+
+<h1>MENU PRINCIPAL</h1>
+<p th:text="'Hola, ' + ${user} + '! Disfruta del juego.'"></p>
+
+
+<div class="description">
+
+
+</div>
+
+
+
+<div class="options">
+
+    <form action="/start" method="post">
+        <label for="maze">Selecciona un laberinto:</label>
+        <select id="maze" name="mazeId" required>
+            <option value="" disabled selected>-- Selecciona un laberinto --</option>
+            <option th:each="maze : ${mazes}" th:value="${maze.idMaze}" th:text="${maze.name}"></option>
+        </select>
+        <button type="submit">Start</button>
+    </form>
+
+    <button type="button" id="see">VER RECORDS</button>
+
+    <a href="/logout">CERRAR SESSION</a>
+
+</div>
+
+<div class="decoration">
+    <h5> TODOS LOS DERECHOS RESERVADORS © </h5>
+</div>
+
+</body>
+</html>
