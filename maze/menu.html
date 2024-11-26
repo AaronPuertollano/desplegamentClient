@@ -48,11 +48,12 @@
 
         .options{
             margin-top: 35px;
-            background-color: aqua;
             width: 80%;
             display: flex;
             flex-direction: row;
             margin: 0 auto;
+            margin-top: 35px;
+            margin-bottom: 90px;
         }
 
         .decoration{
@@ -62,33 +63,39 @@
             text-align: center;
         }
 
+        .options > div > button, a{
+            margin-left: 60px;
+        }
     </style>
 
 <h1>MENU PRINCIPAL</h1>
-<p th:text="'Hola, ' + ${user} + '! Disfruta del juego.'"></p>
-
 
 <div class="description">
-
-
+    <p>MAZE SCAPE</p>
+    <p th:text="'Hola, ' + ${user} + '! Disfruta del juego.'"></p>
 </div>
 
 
 
 <div class="options">
 
-    <form action="/start" method="post">
-        <label for="maze">Selecciona un laberinto:</label>
-        <select id="maze" name="mazeId" required>
-            <option value="" disabled selected>-- Selecciona un laberinto --</option>
-            <option th:each="maze : ${mazes}" th:value="${maze.idMaze}" th:text="${maze.name}"></option>
-        </select>
-        <button type="submit">Start</button>
-    </form>
+    <div>
+        <form action="/start" method="post">
+            <label for="maze">Selecciona un laberinto:</label>
+            <select id="maze" name="mazeId" required>
+                <option value="" disabled selected>-- Selecciona un laberinto --</option>
+                <option th:each="maze : ${mazes}" th:value="${maze.idMaze}" th:text="${maze.name}"></option>
+            </select>
+            <button type="submit">Start</button>
+        </form>
+    </div>
+    
+    <div>
+        <button type="button" id="see">VER RECORDS</button>
+        <a href="/logout">CERRAR SESSION</a>
+    </div>
 
-    <button type="button" id="see">VER RECORDS</button>
 
-    <a href="/logout">CERRAR SESSION</a>
 
 </div>
 
