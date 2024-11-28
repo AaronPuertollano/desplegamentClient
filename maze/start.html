@@ -10,6 +10,7 @@
             background-color: rgb(179, 231, 181);
         }
 
+
         body{
             margin: 0;
             padding: 0;
@@ -67,6 +68,11 @@
             text-align: center;
         }
 
+        h1{
+            color: blue;
+            font-style: italic;
+        }
+
         .speak{
             text-align: center;
             border-style: double;
@@ -89,81 +95,218 @@
 </head>
 <body>
 
-    <div class="titulo">
-        <h1>Juego en Progreso</h1>
-        <p th:text="'Bienvenido, ' + ${user} + '! Actualmente estás en el Maze: ' + ${mazeName}"></p>
-    </div>
-  
-    <div class="content">
+<div class="titulo">
+  <h1>Juego en Progreso</h1>
+  <p th:text="'Bienvenido, ' + ${user} + '! Actualmente estás en el Maze: ' + ${mazeName}"></p>
+</div>
 
-        <div class="info">
+<div class="content">
 
-            <h2>INFORMATION</h2>
+  <div class="info">
 
-            <div class="data">
+    <h2>INFORMATION</h2>
 
-                <p>Room:</p>
-                <p>Time:</p>
-                <p>Coins:</p>
-                <p>Keys A:</p>
-                <p>Keys B:</p>
-          
-            </div>
+    <div class="data">
 
-            <div class="speak">
-                <p>CUIDADO: MONEDAS INSUFUCUENTES!</p>
-            </div>
-
-            <div class="options">
-                <button type="button" id="restart">RESTART</button>
-                <button type="button" id="exit">EXIT</button>
-            </div>
-        
-        </div>
-      
-        <div class="game">
-          <canvas id="gameCanvas" width="550" height="450"></canvas>
-        </div>
-        
-        
-      
-        <div class="control">
-
-            <div>
-                <canvas id="decorationCanvas" width="150" height="150"></canvas>
-            </div>
-
-            <div>
-                <button type="button" id="up">UP</button>
-            </div>
-            <div>
-                <button type="button" id="left">LEFT</button>
-                <button type="button" id="right">RIGHT</button>
-            </div>
-            <div>
-                <button type="button" id="down">DOWN</button>
-            </div>
-        </div>
+      <p>Room:</p>
+      <p>Time:</p>
+      <p>Coins:</p>
+      <p>Keys A:</p>
+      <p>Keys B:</p>
 
     </div>
 
+    <div class="speak">
+      <p>CUIDADO: MONEDAS INSUFUCUENTES!</p>
+    </div>
 
-  <script>
+    <div class="options">
+      <button type="button" id="restart">RESTART</button>
+      <button type="button" id="exit">EXIT</button>
+    </div>
 
-    //EL USUARIO TIENE QUE COMUNICAR CON EL SERVIDOR CADA VEZ QUE ITERACTUE CON UNA PUERTA U OBJETO, EL ONJETO SE DEBE COMPROBAR
-    //EN EL SERVIDOR ANTES DE OBTENERLO, ES MEDIANTE JSON!
+  </div>
 
-        const canvas = document.getElementById('gameCanvas');
-        const ctx = canvas.getContext('2d');
-
-        ctx.fillStyle = "black";
-        ctx.fillRect(0, 0, 40, 550);
-        ctx.fillRect(0, 0, 550, 40);
-        ctx.fillRect(510, 0, 40, 550);
-        ctx.fillRect(0, 410, 550, 40);
+  <div class="game">
+    <canvas id="gameCanvas" width="550" height="450"></canvas>
+  </div>
 
 
 
+  <div class="control">
+
+    <div>
+      <button type="button" id="up">UP</button>
+    </div>
+    <div>
+      <button type="button" id="left">LEFT</button>
+      <button type="button" id="right">RIGHT</button>
+    </div>
+    <div>
+      <button type="button" id="down">DOWN</button>
+    </div>
+  </div>
+
+</div>
+
+
+<script>
+
+    document.getElementById('up').addEventListener('click', () => movePlayer("UP"));
+    document.getElementById('down').addEventListener('click', () => movePlayer("DOWN"));
+    document.getElementById('left').addEventListener('click', () => movePlayer("LEFT"));
+    document.getElementById('right').addEventListener('click', () => movePlayer("RIGHT"));
+
+    // Posición inicial del jugador
+    let playerX = 275;
+    let playerY = 220;
+    const playerRadius = 25;
+    let doors = [];
+
+    async function loadRoomData() {
+        try {
+            const response = await fetch('/room');
+            if (!response.ok) {
+                console.error("No se pudo cargar la habitación");
+                return;
+            }
+            const roomData = await response.json();
+            console.log(roomData);
+            drawRoom(roomData);
+        } catch (error) {
+            console.error("Error al cargar los datos de la habitación:", error);
+        }
+    }
+
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+
+    function drawRoom(roomData) {
+
+      const currentRoomId = roomData.room.idRoom;
+      const doorsInCurrentRoom = roomData.doors;
+      doors = doorsInCurrentRoom;
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = "black";
+      ctx.fillRect(0, 0, 40, 550);
+      ctx.fillRect(0, 0, 550, 40);
+      ctx.fillRect(510, 0, 40, 550);
+      ctx.fillRect(0, 410, 550, 40);
+
+          doorsInCurrentRoom.forEach(door => {
+                ctx.fillStyle = door.stateDoor ? "#008000" : "#ff0000";
+                switch (door.position) {
+                    case "NORTH":
+                        ctx.fillRect(215, 40, 120, 15);
+                        break;
+                    case "SOUTH":
+                        ctx.fillRect(215, 395, 120, 15);
+                        break;
+                    case "EAST":
+                        ctx.fillRect(495, 165, 15, 120);
+                        break;
+                    case "WEST":
+                        ctx.fillRect(40, 165, 15, 120);
+                        break;
+                }
+            });
+
+      playerX = 275;
+      playerY = 220;
+
+      drawPlayer();
+
+    }
+
+    function drawPlayer() {
+        ctx.beginPath();
+        ctx.arc(playerX, playerY, playerRadius, 0, 2 * Math.PI);
+        ctx.fillStyle = "blue";
+        ctx.fill();
+        ctx.lineWidth = 4;
+        ctx.strokeStyle = "black";
+        ctx.stroke();
+    }
+
+    function clearPlayer() {
+        ctx.clearRect(playerX - playerRadius - 2, playerY - playerRadius - 2,
+                      playerRadius * 2 + 4, playerRadius * 2 + 4);
+    }
+
+    // Mover al jugador
+    function movePlayer(direction) {
+        clearPlayer();
+
+        const step = 52; // Distancia de movimiento
+
+        switch (direction) {
+            case "UP":
+                if (playerY - playerRadius > 55) playerY -= step;
+                break;
+            case "DOWN":
+                if (playerY + playerRadius < 350) playerY += step;
+                break;
+            case "LEFT":
+                if (playerX - playerRadius > 52) playerX -= step;
+                break;
+            case "RIGHT":
+                if (playerX + playerRadius < 478) playerX += step;
+                break;
+        }
+
+        const door = checkDoorCollision(playerX, playerY);
+        if (door) {
+            console.log("Intentando abrir puerta...");
+            checkDoorAndChangeRoom(door); // Verificar estado de la puerta y cambiar de sala si procede
+            return;
+        }
+
+        clearPlayer();
+        drawPlayer();
+    }
+
+    function checkDoorCollision(newX, newY) {
+        for (let door of doors) {
+            switch (door.position) {
+                case "NORTH":
+                    if (newY - playerRadius <= 55 && newX >= 215 && newX <= 335) return door;
+                    break;
+                case "SOUTH":
+                    if (newY + playerRadius >= 395 && newX >= 215 && newX <= 335) return door;
+                    break;
+                case "EAST":
+                    if (newX + playerRadius >= 495 && newY >= 165 && newY <= 285) return door;
+                    break;
+                case "WEST":
+                    if (newX - playerRadius <= 55 && newY >= 165 && newY <= 285) return door;
+                    break;
+            }
+        }
+        return null; // No colisión
+    }
+
+    async function checkDoorAndChangeRoom(door) {
+        try {
+            const response = await fetch(`/open?idDoor=${door.idDoor}`, { method: 'GET' });
+            if (!response.ok) {
+                console.error("Error al comprobar el estado de la puerta");
+                return;
+            }
+            const data = await response.json();
+            if (data.canOpen) {
+                console.log("Puerta abierta. Cambiando a la sala:", door.idNextRoom);
+                loadRoomData();
+            } else {
+                console.log("La puerta está cerrada.");
+            }
+        } catch (error) {
+            console.error("Error al intentar abrir la puerta:", error);
+        }
+    }
+
+    window.onload = loadRoomData;
 
     </script>
 </body>
