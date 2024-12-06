@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title>Juego en Progreso</title>
+  <title>JMaze beta</title>
   <style>
         canvas {
             border: 2px solid black;
@@ -181,6 +181,25 @@
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
 
+    //dibujo de llave
+    
+
+
+    openerCrea();
+
+    function openerCrea(){
+
+        //izquierda
+        ctx.fillStyle = "grey";
+        ctx.fillRect(98, 90, 15, 50);
+        ctx.fillRect(112, 130, 15, 8);
+        ctx.fillRect(112, 115, 15, 8);
+        ctx.fillStyle = "black";
+        ctx.fillRect(90, 70, 30, 30);
+
+    }
+
+
     function drawRoom(roomData) {
 
       const currentRoomId = roomData.room.idRoom;
@@ -195,7 +214,7 @@
       ctx.fillRect(510, 0, 40, 550);
       ctx.fillRect(0, 410, 550, 40);
 
-          doorsInCurrentRoom.forEach(door => {
+            doorsInCurrentRoom.forEach(door => {
                 ctx.fillStyle = door.stateDoor ? "#008000" : "#ff0000";
                 switch (door.position) {
                     case "NORTH":
@@ -231,8 +250,7 @@
     }
 
     function clearPlayer() {
-        ctx.clearRect(playerX - playerRadius - 2, playerY - playerRadius - 2,
-                      playerRadius * 2 + 4, playerRadius * 2 + 4);
+        ctx.clearRect(playerX - playerRadius - 2, playerY - playerRadius - 2, playerRadius * 2 + 4, playerRadius * 2 + 4);
     }
 
     // Mover al jugador
@@ -263,8 +281,27 @@
             return;
         }
 
+        const opener = checkOpenerCollision(playerX, playerY);
+        if (opener) {
+            checkOpenerAndCatch(opener); // Si puede cojerlo se lo guarda en su inventario
+            return;
+        }
+
         clearPlayer();
         drawPlayer();
+    }
+
+    function checkOpenerCollision(newX, newY){
+
+        for (let opener of openers) {
+                // Verificar colisión basada en posiciones estimadas
+            const inLeftZone = playerX >= 98 && playerX <= 128 && playerY >= 70 && playerY <= 140;
+        
+            if (inLeftZone) {
+                return opener; // Retorna la llave con la que colisionó
+            }
+        }
+        return null; // No colisión
     }
 
     function checkDoorCollision(newX, newY) {

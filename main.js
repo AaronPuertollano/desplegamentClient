@@ -7,6 +7,19 @@ const response = fetch("https://api.thecatapi.com/v1/images/search").then((p) =>
         })
     }
 }).catch((e) => console.error(e));
+
+
+como declarar funciones? que tipos hay? arrow, expresion
+que son la funciones anonimas?
+
+var let const, diferecnias
+
+que es el hoisting? 
+
+true, false o undefied o error? ejemplos de codigo
+
+como se comprime un codigo? script asycrn type module
+
 */
 
 const fetchCat = async () => {
