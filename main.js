@@ -20,6 +20,8 @@ true, false o undefied o error? ejemplos de codigo
 
 como se comprime un codigo? script asycrn type module
 
+let url = window.location.href / para modificar una url
+url.searchparam.append
 */
 
 const fetchCat = async () => {
