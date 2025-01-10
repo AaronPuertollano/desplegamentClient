@@ -28,7 +28,7 @@ url.searchparam.append
 aplicar un login mentres es fa una api
 */
 
-const promise = fetch("api.thecatapi.com");//saber sus estados: ponging, fullfilled, rejected
+const promise = fetch("api.thecatapi.com");//saber sus estados: ponging, fullfilled, rejected / pendiente, resuelto o rechazado
 promise.then((value) => {
     //lo que se tenga que hacer con el valor de la promesa
 })
